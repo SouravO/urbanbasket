@@ -122,3 +122,17 @@
   .network-tabs>button{font-size:11px;padding-inline:10px}
   .comparison-meta button{font-size:9px}
 }
+
+/* Four service chapters share one sticky stage; page scroll supplies progress. */
+.network-scroll-track{position:relative}
+.network-scroll-stage{position:relative}
+@media(min-width:1001px) and (min-height:760px) and (prefers-reduced-motion:no-preference){
+  .network-scroll-track[data-scroll-enabled=true]{height:340vh;height:340svh}
+  .network-scroll-track[data-scroll-enabled=true] .network-scroll-stage{position:sticky;top:104px}
+  .network-scroll-stage .connection-panel{height:clamp(440px,58svh,620px);min-height:0}
+  .network-scroll-stage .connection-image>img{min-height:0}
+  .network-scroll-stage .connection-copy{padding:26px 32px 22px}
+  .network-scroll-stage .connection-copy h3{font-size:clamp(29px,2.6vw,37px);margin-top:16px}
+  .network-scroll-stage .connection-copy>p{margin-top:16px}
+  .network-scroll-stage .connection-copy ul{margin-block:16px}
+}

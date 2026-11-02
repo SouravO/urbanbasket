@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useRef, useState, useSyncExternalStore } from 'react';
+import { useScroll, useMotionValueEvent } from 'framer-motion';
 import {
   Package,
   Store,
@@ -14,9 +15,38 @@ import {
 import { NETWORK_TABS } from '@/lib/content';
 import { SunIcon } from '@/components/sun-icon';
 
+const SCROLL_QUERY = '(min-width: 1001px) and (min-height: 760px) and (prefers-reduced-motion: no-preference)';
+const subscribeScrollLayout = (notify: () => void) => {
+  const media = window.matchMedia(SCROLL_QUERY);
+  media.addEventListener('change', notify);
+  return () => media.removeEventListener('change', notify);
+};
+const getScrollLayout = () => window.matchMedia(SCROLL_QUERY).matches;
+const getServerScrollLayout = () => false;
+
 export function NetworkExplorer() {
   const [activeTabIdx, setActiveTabIdx] = useState<number>(0);
   const activeTab = NETWORK_TABS[activeTabIdx];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const scrollEnabled = useSyncExternalStore(subscribeScrollLayout, getScrollLayout, getServerScrollLayout);
+  const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start start', 'end end'] });
+
+  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
+    if (!scrollEnabled) return;
+    const index = Math.min(NETWORK_TABS.length - 1, Math.floor(progress * NETWORK_TABS.length));
+    setActiveTabIdx((previous) => previous === index ? previous : index);
+  });
+
+  const selectTab = (index: number) => {
+    setActiveTabIdx(index);
+    const track = trackRef.current;
+    if (!scrollEnabled || !track) return;
+    // Keep clicks and keyboard navigation aligned with the scroll-driven stage.
+    const start = window.scrollY + track.getBoundingClientRect().top;
+    const travel = Math.max(0, track.offsetHeight - window.innerHeight);
+    const progress = (index + 0.5) / NETWORK_TABS.length;
+    window.scrollTo({ top: start + progress * travel, behavior: 'instant' });
+  };
 
   const getTabIcon = (id: string) => {
     switch (id) {
@@ -34,19 +64,19 @@ export function NetworkExplorer() {
   };
 
   const handleNext = () => {
-    setActiveTabIdx((prev) => (prev + 1) % NETWORK_TABS.length);
+    selectTab((activeTabIdx + 1) % NETWORK_TABS.length);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     if (e.key === 'ArrowRight') {
       e.preventDefault();
       const next = (index + 1) % NETWORK_TABS.length;
-      setActiveTabIdx(next);
+      selectTab(next);
       document.getElementById(`network-tab-${next}`)?.focus();
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
       const prev = (index - 1 + NETWORK_TABS.length) % NETWORK_TABS.length;
-      setActiveTabIdx(prev);
+      selectTab(prev);
       document.getElementById(`network-tab-${prev}`)?.focus();
     }
   };
@@ -74,6 +104,8 @@ export function NetworkExplorer() {
           </p>
         </div>
 
+        <div ref={trackRef} className="network-scroll-track" data-scroll-enabled={scrollEnabled}>
+        <div className="network-scroll-stage">
         {/* Tabs Bar */}
         <div
           className="network-tabs"
@@ -89,9 +121,9 @@ export function NetworkExplorer() {
                 type="button"
                 role="tab"
                 aria-selected={isSelected}
-                aria-controls={`network-panel-${tab.id}`}
+                aria-controls="network-panel"
                 tabIndex={isSelected ? 0 : -1}
-                onClick={() => setActiveTabIdx(idx)}
+                onClick={() => selectTab(idx)}
                 onKeyDown={(e) => handleKeyDown(e, idx)}
               >
                 <span className="tab-number">{tab.number}</span>
@@ -105,23 +137,26 @@ export function NetworkExplorer() {
 
         {/* Split Connection Panel */}
         <div
-          id={`network-panel-${activeTab.id}`}
+          id="network-panel"
           className="connection-panel"
           role="tabpanel"
           aria-labelledby={`network-tab-${activeTabIdx}`}
         >
           {/* Left: Artwork */}
           <div className="connection-image">
-            <Image
-              key={activeTab.id}
-              src={activeTab.image}
-              alt={activeTab.alt}
-              style={{ objectPosition: activeTab.objectPosition }}
-              loading="lazy"
-              width={1600}
-            height={705}
-            sizes="(max-width: 760px) 100vw, 60vw"
-            />
+            {NETWORK_TABS.map((tab, index) => (
+              <Image
+                key={tab.id}
+                src={tab.image}
+                alt={tab.alt}
+                aria-hidden={index !== activeTabIdx}
+                style={{ objectPosition: tab.objectPosition, display: index === activeTabIdx ? 'block' : 'none' }}
+                loading="eager"
+                width={1600}
+                height={705}
+                sizes="(max-width: 760px) 100vw, 60vw"
+              />
+            ))}
             <span className="image-edition">
               THE URBANBASKET CONNECTION / {activeTab.number}
             </span>
@@ -163,6 +198,9 @@ export function NetworkExplorer() {
               </button>
             </div>
           </div>
+        </div>
+
+        </div>
         </div>
 
         {/* Footnote Row */}
