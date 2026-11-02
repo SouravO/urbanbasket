@@ -51,8 +51,8 @@ export function SiteFooter({ onOpenPrivacy, onPartnerClick }: SiteFooterProps) {
         </div>
 
         {/* Giant Memorable Brand Sign-Off */}
-        <div className="footer-giant ">
-          <span className=''>urbanbasket.</span>
+        <div className="footer-giant">
+          <span>urbanbasket</span>
           <SunIcon size={100} />
         </div>
 
