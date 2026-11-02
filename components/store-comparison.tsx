@@ -1,16 +1,80 @@
 'use client';
 
-import React, { useState } from 'react';
+import Image from 'next/image';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  motion,
+  useInView,
+  useMotionValue,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 import { ArrowLeftRight, MoveHorizontal, ArrowDown, ArrowUpRight } from 'lucide-react';
 import { SunIcon } from '@/components/sun-icon';
 
-export function StoreComparison() {
-  // Default: 48% original kirana on the left, 52% Hello chapter on the right
-  const [sliderPos, setSliderPos] = useState<number>(48);
+const DEFAULT_POSITION = 48;
 
-  const handlePreset = (pos: number) => {
-    setSliderPos(pos);
+export function StoreComparison() {
+  const comparisonRef = useRef<HTMLDivElement>(null);
+  const manualRef = useRef(false);
+
+  // Default: 48% original kirana on the left, 52% Urbanbasket chapter on the right
+  const [sliderPos, setSliderPos] = useState<number>(DEFAULT_POSITION);
+
+  const prefersReducedMotion = useReducedMotion();
+  const inView = useInView(comparisonRef, { amount: 0.15 });
+
+  // Single source of truth for the visible position, driven by scroll or manual input
+  const position = useMotionValue(DEFAULT_POSITION);
+
+  // Map the comparison card's travel through the viewport to a slider position.
+  // 48% -> 100% (full original) -> 0% (full Urbanbasket store) for a "chapter" reveal.
+  const { scrollYProgress } = useScroll({
+    target: comparisonRef,
+    offset: ['start 0.9', 'center 0.45'],
+  });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 24,
+    mass: 0.5,
+  });
+  const scrollPosition = useTransform(
+    smoothProgress,
+    [0, 0.45, 1],
+    [DEFAULT_POSITION, 100, 0]
+  );
+
+  useMotionValueEvent(scrollPosition, 'change', (value) => {
+    if (prefersReducedMotion || manualRef.current) return;
+    position.set(value);
+  });
+
+  useMotionValueEvent(position, 'change', (value) => {
+    const rounded = Math.round(value);
+    setSliderPos((previous) => (previous === rounded ? previous : rounded));
+  });
+
+  // Once the user takes control, pause the auto-sweep until the card leaves the
+  // viewport, so it plays fresh again on the next pass.
+  useEffect(() => {
+    if (!inView) {
+      manualRef.current = false;
+    }
+  }, [inView]);
+
+  const setManualPosition = (value: number) => {
+    manualRef.current = true;
+    position.set(value);
+    setSliderPos(Math.round(value));
   };
+
+  const comparisonLeft = useTransform(position, (value) => `${value}%`);
+  const comparisonClip = useTransform(position, (value) => `inset(0 0 0 ${value}%)`);
+  const beforeOpacity = useTransform(position, (value) => (value <= 8 ? 0 : 1));
+  const afterOpacity = useTransform(position, (value) => (value >= 92 ? 0 : 1));
 
   return (
     <section id="our-story" className="section" aria-labelledby="story-heading">
@@ -34,65 +98,63 @@ export function StoreComparison() {
               know where to find them.
             </p>
             <p>
-              Hello Stores is being built to give those local businesses more support,
+              Urbanbasket is being built to give those local businesses more support,
               while keeping everything that makes them special.
             </p>
           </div>
         </div>
 
         {/* Interactive Comparison Component */}
-        <div
-          className="comparison"
-          style={
-            {
-              '--comparison': `${sliderPos}%`,
-            } as React.CSSProperties
-          }
-        >
+        <motion.div ref={comparisonRef} className="comparison">
           {/* Base: Original Kirana Image */}
-          <img
+          <Image
             src="/images/original-store.webp"
             alt="The familiar traditional kirana store"
             loading="lazy"
-            decoding="async"
+            width={1600}
+            height={720}
+            sizes="(max-width: 1392px) 100vw, 1280px"
           />
 
-          {/* Overlay: Hello Chapter Concept Store with clip-path */}
-          <div
-            className="comparison-after"
-            style={{ clipPath: `inset(0 0 0 ${sliderPos}%)` }}
-          >
-            <img
-              src="/images/hello-store.webp"
-              alt="The modernised Hello Stores concept kirana"
+          {/* Overlay: Urbanbasket Chapter Concept Store with clip-path */}
+          <motion.div className="comparison-after" style={{ clipPath: comparisonClip }}>
+            <Image
+              src="/images/urbanbasket-store-cartoon.webp"
+              alt="The modernised Urbanbasket concept kirana"
               loading="lazy"
-              decoding="async"
+              width={1600}
+              height={720}
+              sizes="(max-width: 1392px) 100vw, 1280px"
             />
-          </div>
+          </motion.div>
 
           {/* Left Label */}
-          <span
+          <motion.span
             className="comparison-label label-before"
-            style={{ opacity: sliderPos <= 8 ? 0 : 1 }}
+            style={{ opacity: beforeOpacity }}
           >
             THE FAMILIAR KIRANA
-          </span>
+          </motion.span>
 
           {/* Right Label */}
-          <span
+          <motion.span
             className="comparison-label label-after"
-            style={{ opacity: sliderPos >= 92 ? 0 : 1 }}
+            style={{ opacity: afterOpacity }}
           >
             <SunIcon size={14} />
-            THE HELLO CHAPTER
-          </span>
+            THE URBANBASKET CHAPTER
+          </motion.span>
 
           {/* Moving Divider with Circular Handle */}
-          <div className="comparison-divider" aria-hidden="true">
+          <motion.div
+            className="comparison-divider"
+            aria-hidden="true"
+            style={{ left: comparisonLeft }}
+          >
             <span>
               <ArrowLeftRight size={20} />
             </span>
-          </div>
+          </motion.div>
 
           {/* Accessible Range Input */}
           <input
@@ -100,14 +162,14 @@ export function StoreComparison() {
             min="0"
             max="100"
             value={sliderPos}
-            onChange={(e) => setSliderPos(Number(e.target.value))}
-            aria-label="Store comparison slider: drag horizontally to compare the traditional kirana with the Hello Stores model"
+            onChange={(e) => setManualPosition(Number(e.target.value))}
+            aria-label="Store comparison slider: drag horizontally to compare the traditional kirana with the Urbanbasket model"
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={sliderPos}
-            aria-valuetext={`${sliderPos}% traditional kirana, ${100 - sliderPos}% Hello store`}
+            aria-valuetext={`${sliderPos}% traditional kirana, ${100 - sliderPos}% Urbanbasket store`}
           />
-        </div>
+        </motion.div>
 
         {/* Comparison Metadata & Controls */}
         <div className="comparison-meta">
@@ -120,29 +182,29 @@ export function StoreComparison() {
             <button
               type="button"
               aria-pressed={sliderPos === 100}
-              onClick={() => handlePreset(100)}
+              onClick={() => setManualPosition(100)}
             >
-              Before Hello
+              Before Urbanbasket
             </button>
             <button
               type="button"
-              aria-pressed={sliderPos === 48}
-              onClick={() => handlePreset(48)}
+              aria-pressed={sliderPos === DEFAULT_POSITION}
+              onClick={() => setManualPosition(DEFAULT_POSITION)}
             >
               Compare
             </button>
             <button
               type="button"
               aria-pressed={sliderPos === 0}
-              onClick={() => handlePreset(0)}
+              onClick={() => setManualPosition(0)}
             >
-              <span>With Hello</span>
+              <span>With Urbanbasket</span>
               <ArrowUpRight size={11} aria-hidden="true" />
             </button>
           </div>
 
           <span className="concept-note">
-            An illustrated look at the Hello Stores model.
+            A concept of the Urbanbasket experience.
           </span>
         </div>
 
@@ -157,7 +219,7 @@ export function StoreComparison() {
           <a
             href="#network"
             className="round-link"
-            aria-label="Explore the Hello network"
+            aria-label="Explore the Urbanbasket network"
           >
             <ArrowDown size={24} aria-hidden="true" />
           </a>

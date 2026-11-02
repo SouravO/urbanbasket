@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Store,
   Sparkles,
@@ -25,7 +25,7 @@ export function PartnerEnquiry({
   onOpenPrivacy,
 }: PartnerEnquiryProps) {
   // Submission UUID for idempotency
-  const [submissionId, setSubmissionId] = useState<string>('');
+  const submissionId = useRef<string>('');
 
   // Form field states
   const [fullName, setFullName] = useState<string>('');
@@ -39,13 +39,6 @@ export function PartnerEnquiry({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submittedReference, setSubmittedReference] = useState<string | null>(null);
-
-  // Initialize unique UUID on client
-  useEffect(() => {
-    if (!submissionId) {
-      setSubmissionId(crypto.randomUUID());
-    }
-  }, [submissionId]);
 
   const getRoleIcon = (icon: string) => {
     switch (icon) {
@@ -105,6 +98,7 @@ export function PartnerEnquiry({
       return;
     }
 
+    if (!submissionId.current) submissionId.current = crypto.randomUUID();
     setIsSubmitting(true);
 
     try {
@@ -114,7 +108,7 @@ export function PartnerEnquiry({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: submissionId,
+          id: submissionId.current,
           name: trimmedName,
           phone: cleanedPhone,
           business: businessName.trim() || null,
@@ -149,7 +143,7 @@ export function PartnerEnquiry({
 
   const handleRegisterAnother = () => {
     // Reset state and generate new UUID for a clean subsequent enquiry
-    setSubmissionId(crypto.randomUUID());
+    submissionId.current = crypto.randomUUID();
     setFullName('');
     setMobileNumber('');
     setBusinessName('');
@@ -170,7 +164,7 @@ export function PartnerEnquiry({
           <h2 id="partner-heading">
             Put a little
             <br />
-            <em>hello</em> in your
+            <em>local</em> in your
             <br />
             next chapter
             <span className="yellow-period">.</span>
@@ -221,9 +215,9 @@ export function PartnerEnquiry({
 
               <span className="eyebrow">A NEW CONNECTION BEGINS.</span>
 
-              <h3>Hello, future neighbour.</h3>
+              <h3>Welcome, future neighbour.</h3>
 
-              <p>Your interest has been registered with Hello Stores.</p>
+              <p>Your interest has been registered with Urbanbasket.</p>
 
               <div className="enquiry-reference">
                 <span>YOUR ENQUIRY REFERENCE</span>
@@ -250,7 +244,7 @@ export function PartnerEnquiry({
               <h3>A little about you.</h3>
 
               <p className="form-intro">
-                Leave your details to explore a Hello partnership.
+                Leave your details to explore an Urbanbasket partnership.
               </p>
 
               <div className="form-grid">
@@ -369,7 +363,7 @@ export function PartnerEnquiry({
                   onChange={(e) => setConsentChecked(e.target.checked)}
                 />
                 <span>
-                  I agree to be contacted by Hello Stores about my enquiry.{' '}
+                  I agree to be contacted by Urbanbasket about my enquiry.{' '}
                   <button
                     type="button"
                     onClick={onOpenPrivacy}
@@ -395,12 +389,12 @@ export function PartnerEnquiry({
               >
                 {isSubmitting ? (
                   <>
-                    <span>Sending your hello…</span>
+                    <span>Sending your enquiry…</span>
                     <span className="spinner" aria-hidden="true" />
                   </>
                 ) : (
                   <>
-                    <span>Say hello. Let’s grow.</span>
+                    <span>Let’s grow together.</span>
                     <ArrowUpRight size={16} aria-hidden="true" />
                   </>
                 )}

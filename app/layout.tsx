@@ -1,28 +1,27 @@
 import type { Metadata } from 'next';
 import './globals.css';
-
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'Hello Stores | Your neighbourhood, connected',
+  title: 'Urbanbasket | Your neighbourhood, connected',
   description:
-    'The next chapter for your neighbourhood kirana. Discover Hello Stores: shared supply, simple store technology and local online shopping. Starting in Kochi.',
+    'The next chapter for your neighbourhood kirana. Discover Urbanbasket: shared supply, simple store technology and local online shopping. Starting in Kochi.',
   icons: {
-    icon: '/favicon.svg',
+    icon: '/brand/urbanbasket-master.png',
   },
   openGraph: {
-    title: 'Hello Stores | Your neighbourhood, connected',
+    title: 'Urbanbasket | Your neighbourhood, connected',
     description:
-      'The next chapter for your neighbourhood kirana. Discover Hello Stores: shared supply, simple store technology and local online shopping. Starting in Kochi.',
+      'The next chapter for your neighbourhood kirana. Discover Urbanbasket: shared supply, simple store technology and local online shopping. Starting in Kochi.',
     url: siteUrl,
-    siteName: 'Hello Stores',
+    siteName: 'Urbanbasket',
     images: [
       {
-        url: '/images/hello-store.webp',
-        width: 1200,
-        height: 630,
-        alt: 'Hello Stores concept store in Kerala',
+        url: '/images/urbanbasket-neighbourhood-cartoon.webp',
+        width: 1600,
+        height: 710,
+        alt: 'Cartoon Urbanbasket neighbourhood concept in Kerala',
       },
     ],
     locale: 'en_IN',
@@ -30,10 +29,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Hello Stores | Your neighbourhood, connected',
+    title: 'Urbanbasket | Your neighbourhood, connected',
     description:
-      'The next chapter for your neighbourhood kirana. Discover Hello Stores: shared supply, simple store technology and local online shopping. Starting in Kochi.',
-    images: ['/images/hello-store.webp'],
+      'The next chapter for your neighbourhood kirana. Discover Urbanbasket: shared supply, simple store technology and local online shopping. Starting in Kochi.',
+    images: ['/images/urbanbasket-neighbourhood-cartoon.webp'],
   },
 };
 

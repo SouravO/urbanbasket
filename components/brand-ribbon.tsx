@@ -31,7 +31,7 @@ export function BrandRibbon() {
           border: 0,
         }}
       >
-        Hello Stores: Local owners, shared supply, familiar faces, new possibilities.
+        Urbanbasket: Local owners, shared supply, familiar faces, new possibilities.
       </span>
 
       {/* Continuously drifting decorative track */}

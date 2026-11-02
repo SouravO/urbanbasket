@@ -76,7 +76,7 @@ export function PrivacyDialog({ isOpen, onClose }: PrivacyDialogProps) {
         <h2 id="privacy-heading">Privacy note</h2>
 
         <p>
-          When you register interest, Hello Stores collects your name, mobile number,
+          When you register interest, Urbanbasket collects your name, mobile number,
           city, partnership type, business name (if provided), your consent and the
           submission time.
         </p>

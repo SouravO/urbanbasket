@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { useState } from 'react';
 import {
   Package,
@@ -69,7 +70,7 @@ export function NetworkExplorer() {
           <p>
             You take care of the neighbourhood.
             <br />
-            Here’s how the Hello model takes care of the everyday.
+            Here’s how the Urbanbasket model takes care of the everyday.
           </p>
         </div>
 
@@ -77,7 +78,7 @@ export function NetworkExplorer() {
         <div
           className="network-tabs"
           role="tablist"
-          aria-label="Hello network services"
+          aria-label="Urbanbasket network services"
         >
           {NETWORK_TABS.map((tab, idx) => {
             const isSelected = activeTabIdx === idx;
@@ -111,16 +112,18 @@ export function NetworkExplorer() {
         >
           {/* Left: Artwork */}
           <div className="connection-image">
-            <img
+            <Image
               key={activeTab.id}
               src={activeTab.image}
               alt={activeTab.alt}
               style={{ objectPosition: activeTab.objectPosition }}
               loading="lazy"
-              decoding="async"
+              width={1600}
+            height={705}
+            sizes="(max-width: 760px) 100vw, 60vw"
             />
             <span className="image-edition">
-              THE HELLO CONNECTION / {activeTab.number}
+              THE URBANBASKET CONNECTION / {activeTab.number}
             </span>
           </div>
 

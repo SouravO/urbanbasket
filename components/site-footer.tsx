@@ -1,6 +1,11 @@
 'use client';
 
-import React from 'react';
+import { BrandLogo } from '@/components/brand-logo';
+import React, { useSyncExternalStore } from 'react';
+
+const subscribeYear = () => () => {};
+const getYear = () => new Date().getFullYear();
+const getServerYear = () => 2026;
 import { ArrowUpRight } from 'lucide-react';
 import { SunIcon } from '@/components/sun-icon';
 
@@ -10,11 +15,7 @@ interface SiteFooterProps {
 }
 
 export function SiteFooter({ onOpenPrivacy, onPartnerClick }: SiteFooterProps) {
-  const [currentYear, setCurrentYear] = React.useState<number>(2026);
-
-  React.useEffect(() => {
-    setCurrentYear(new Date().getFullYear());
-  }, []);
+  const currentYear = useSyncExternalStore(subscribeYear, getYear, getServerYear);
 
   return (
     <footer className="site-footer">
@@ -22,18 +23,8 @@ export function SiteFooter({ onOpenPrivacy, onPartnerClick }: SiteFooterProps) {
         {/* Footer Top Row */}
         <div className="footer-top">
           {/* Brand Wordmark (links back to top) */}
-          <a href="#hero" className="logo-link" aria-label="Hello Stores Home">
-            <div className="brand brand-light">
-              <span className="brand-word">
-                hello
-                <span className="brand-rays" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </span>
-              </span>
-              <span className="brand-sub">STORES</span>
-            </div>
+          <a href="#hero" className="logo-link" aria-label="Urbanbasket Home">
+            <BrandLogo />
           </a>
 
           <p>
@@ -44,7 +35,7 @@ export function SiteFooter({ onOpenPrivacy, onPartnerClick }: SiteFooterProps) {
 
           <nav aria-label="Footer Navigation">
             <a href="#our-story">Our story</a>
-            <a href="#network">The Hello way</a>
+            <a href="#network">The Urbanbasket way</a>
             <a href="#for-store-owners">For store owners</a>
             <a
               href="#partner"
@@ -53,21 +44,21 @@ export function SiteFooter({ onOpenPrivacy, onPartnerClick }: SiteFooterProps) {
                 onPartnerClick();
               }}
             >
-              <span>Say hello</span>
+              <span>Get in touch</span>
               <ArrowUpRight size={12} aria-hidden="true" />
             </a>
           </nav>
         </div>
 
         {/* Giant Memorable Brand Sign-Off */}
-        <div className="footer-giant">
-          <span>hello.</span>
+        <div className="footer-giant ">
+          <span className=''>urbanbasket.</span>
           <SunIcon size={100} />
         </div>
 
         {/* Footer Bottom Row */}
         <div className="footer-bottom">
-          <span>© {currentYear} Hello Stores.</span>
+          <span>© {currentYear} Urbanbasket.</span>
           <span>Your neighbourhood, connected.</span>
           <button type="button" onClick={onOpenPrivacy}>
             <span>Privacy note</span>

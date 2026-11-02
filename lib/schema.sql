@@ -1,4 +1,4 @@
--- Hello Stores schema migration for partner enquiries
+-- Urbanbasket schema migration for partner enquiries
 -- Table: partner_enquiries
 
 CREATE TABLE IF NOT EXISTS partner_enquiries (

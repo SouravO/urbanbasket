@@ -36,7 +36,7 @@ export default function HomePage() {
       <main id="main-content">
         {/* Hero Section */}
         <Hero
-          onBringHelloClick={() => handleRoleSelectAndScroll('store-owner')}
+          onBringUrbanbasketClick={() => handleRoleSelectAndScroll('store-owner')}
         />
 
         {/* Yellow Brand Ribbon */}

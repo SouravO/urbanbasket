@@ -1,5 +1,6 @@
 'use client';
 
+import { BrandLogo } from '@/components/brand-logo';
 import React, { useState, useEffect } from 'react';
 import { MapPin, ArrowUpRight, Menu, X } from 'lucide-react';
 import { NAV_LINKS } from '@/lib/content';
@@ -46,18 +47,8 @@ export function SiteHeader({ onPartnerClick }: SiteHeaderProps) {
       <header className="site-header">
         <div className="wrap header-inner">
           {/* Logo */}
-          <a href="#hero" className="logo-link" aria-label="Hello Stores Home">
-            <div className="brand brand-light">
-              <span className="brand-word">
-                hello
-                <span className="brand-rays" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </span>
-              </span>
-              <span className="brand-sub">STORES</span>
-            </div>
+          <a href="#hero" className="logo-link" aria-label="Urbanbasket Home">
+            <BrandLogo />
           </a>
 
           {/* Desktop Tagline */}

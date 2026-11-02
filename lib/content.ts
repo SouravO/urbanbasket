@@ -20,9 +20,9 @@ export const NETWORK_TABS: NetworkTab[] = [
     heading: 'Fuller shelves. Fewer market trips.',
     copy: 'A shared supply network brings everyday essentials to your doorstep, so you can spend more of the day doing what you do best: running your store.',
     points: ['Central sourcing', 'Storefront replenishment', 'Everyday essentials'],
-    image: '/images/shared-supply.webp',
+    image: '/images/urbanbasket-supply-cartoon.webp',
     objectPosition: 'center',
-    alt: 'Shared supply warehouse and replenishment team at Hello Stores',
+    alt: 'Shared supply warehouse and replenishment team at Urbanbasket',
   },
   {
     id: 'simplify',
@@ -30,11 +30,11 @@ export const NETWORK_TABS: NetworkTab[] = [
     tabTitle: 'Simplify your day',
     category: 'A smarter everyday store',
     heading: 'A familiar store, with a fresh start.',
-    copy: 'Welcoming shelves, useful variety and simple billing and stock tools. The Hello model connects everyday sales to replenishment, keeping your next delivery in view.',
+    copy: 'Welcoming shelves, useful variety and simple billing and stock tools. The Urbanbasket model connects everyday sales to replenishment, keeping your next delivery in view.',
     points: ['Organised shelves', 'Connected billing', 'Stock visibility'],
-    image: '/images/store-technology.webp',
+    image: '/images/urbanbasket-technology-cartoon.webp',
     objectPosition: 'center',
-    alt: 'Organised shelves and modern billing counter at Hello Store',
+    alt: 'Organised shelves and modern billing counter at Urbanbasket store',
   },
   {
     id: 'online',
@@ -42,11 +42,11 @@ export const NETWORK_TABS: NetworkTab[] = [
     tabTitle: 'Go online',
     category: 'Your shop, now online',
     heading: 'The local shop. On their phone.',
-    copy: 'Bring the neighbourhood relationship online. Customers can discover their nearby Hello Store and browse everyday essentials, with orders picked at the store they already know.',
+    copy: 'Bring the neighbourhood relationship online. Customers can discover their nearby Urbanbasket store and browse everyday essentials, with orders picked at the store they already know.',
     points: ['Local discovery', 'Online ordering', 'Store-based picking'],
-    image: '/images/order-online.webp',
-    objectPosition: '34% center',
-    alt: 'Customer browsing and ordering from neighbourhood Hello Store on smartphone',
+    image: '/images/urbanbasket-online-cartoon.webp',
+    objectPosition: '65% center',
+    alt: 'Customer browsing and ordering from neighbourhood Urbanbasket store on smartphone',
   },
   {
     id: 'deliver',
@@ -56,9 +56,9 @@ export const NETWORK_TABS: NetworkTab[] = [
     heading: 'From your counter to their doorstep.',
     copy: 'Make your store a nearby delivery point. Local orders stay connected to your shop, bringing the convenience of delivery to the personal touch of neighbourhood retail.',
     points: ['Nearby orders', 'Local fulfilment', 'Familiar faces'],
-    image: '/images/local-delivery.webp',
+    image: '/images/urbanbasket-delivery-cartoon.webp',
     objectPosition: 'center',
-    alt: 'Hello Stores neighbourhood delivery rider on motorcycle',
+    alt: 'Urbanbasket neighbourhood delivery rider on motorcycle',
   },
 ];
 
@@ -101,25 +101,25 @@ export const FAQS: FaqItem[] = [
   {
     id: 'faq-1',
     number: '01',
-    question: 'What is Hello Stores?',
-    answer: 'Hello Stores is a neighbourhood retail network being built around locally run kirana stores. The model brings branding, shared supply, simple store technology and local online shopping together, while keeping the store owner at the centre.',
+    question: 'What is Urbanbasket?',
+    answer: 'Urbanbasket is a neighbourhood retail network being built around locally run kirana stores. The model brings branding, shared supply, simple store technology and local online shopping together, while keeping the store owner at the centre.',
   },
   {
     id: 'faq-2',
     number: '02',
     question: 'Can my existing kirana store join?',
-    answer: 'Yes. Upgrading existing kiranas is part of the Hello Stores plan. Register your interest with your store name and city so the team can explore your location, store needs and the next steps with you.',
+    answer: 'Yes. Upgrading existing kiranas is part of the Urbanbasket plan. Register your interest with your store name and city so the team can explore your location, store needs and the next steps with you.',
   },
   {
     id: 'faq-3',
     number: '03',
-    question: 'Who runs a Hello Store?',
-    answer: 'Local entrepreneurs run their stores. Hello Stores is designed to support them with a connected brand, supply network and store systems, while they continue to serve the neighbourhood they know.',
+    question: 'Who runs an Urbanbasket store?',
+    answer: 'Local entrepreneurs run their stores. Urbanbasket is designed to support them with a connected brand, supply network and store systems, while they continue to serve the neighbourhood they know.',
   },
   {
     id: 'faq-4',
     number: '04',
-    question: 'Where is Hello Stores launching?',
+    question: 'Where is Urbanbasket launching?',
     answer: 'The first chapter is planned for Kochi, with showcase stores demonstrating the connected experience. You can also register interest from another city as the network develops.',
   },
   {
@@ -131,7 +131,7 @@ export const FAQS: FaqItem[] = [
   {
     id: 'faq-6',
     number: '06',
-    question: 'Can brands and suppliers work with Hello Stores?',
+    question: 'Can brands and suppliers work with Urbanbasket?',
     answer: 'Yes. Brands, staples producers and suppliers can register interest in the shared supply network. Choose “Brand or supplier” in the enquiry form and add your business name.',
   },
 ];
@@ -161,7 +161,7 @@ export type PartnershipRoleId = typeof PARTNERSHIP_ROLES[number]['id'];
 
 export const NAV_LINKS = [
   { href: '#our-story', label: 'Our story' },
-  { href: '#network', label: 'The Hello way' },
+  { href: '#network', label: 'The Urbanbasket way' },
   { href: '#for-store-owners', label: 'For store owners' },
   { href: '#questions', label: 'FAQs' },
 ];

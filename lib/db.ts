@@ -26,7 +26,7 @@ export function getDbPool(): Pool | null {
 
 export function generateReference(id: string): string {
   const clean = id.replace(/[^a-zA-Z0-9]/g, '').slice(0, 8).toUpperCase();
-  return `HS-${clean}`;
+  return `UB-${clean}`;
 }
 
 export interface SaveEnquiryParams {

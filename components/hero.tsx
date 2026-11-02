@@ -1,24 +1,28 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { ArrowUpRight, ArrowDown } from 'lucide-react';
 import { SunIcon } from '@/components/sun-icon';
 
 interface HeroProps {
-  onBringHelloClick: () => void;
+  onBringUrbanbasketClick: () => void;
 }
 
-export function Hero({ onBringHelloClick }: HeroProps) {
+export function Hero({ onBringUrbanbasketClick }: HeroProps) {
   return (
     <section id="hero" className="hero" aria-labelledby="hero-heading">
       {/* Immersive Kerala Neighbourhood Illustration */}
-      <img
-        src="/images/hello-neighbourhood.webp"
-        alt="Illustrated Kerala neighbourhood with a Hello Store, customers, and delivery van"
-        className="hero-scene"
-        loading="eager"
-        decoding="async"
-      />
+      <div className="hero-artwork">
+        <Image
+          src="/images/urbanbasket-neighbourhood-cartoon.webp"
+          alt="Illustrated Kerala neighbourhood with an Urbanbasket store, customers, and delivery van"
+          className="hero-scene"
+          fill
+          sizes="100vw"
+          preload
+        />
+      </div>
 
       {/* Layered Gradient Shade for readable typography while preserving illustration */}
       <div className="hero-shade" aria-hidden="true" />
@@ -48,11 +52,11 @@ export function Hero({ onBringHelloClick }: HeroProps) {
               href="#partner"
               onClick={(e) => {
                 e.preventDefault();
-                onBringHelloClick();
+                onBringUrbanbasketClick();
               }}
               className="button button-yellow"
             >
-              <span>Bring Hello to my store</span>
+              <span>Bring Urbanbasket to my store</span>
               <span className="button-icon">
                 <ArrowUpRight size={17} aria-hidden="true" />
               </span>
@@ -74,7 +78,7 @@ export function Hero({ onBringHelloClick }: HeroProps) {
             <br />
             CONNECTED
             <br />
-            BY HELLO.
+            BY URBANBASKET.
           </span>
         </div>
 
@@ -89,7 +93,7 @@ export function Hero({ onBringHelloClick }: HeroProps) {
             <br />
             <em>A bigger tomorrow.</em>
           </p>
-          <span className="note-foot">THE HELLO STORES VISION</span>
+          <span className="note-foot">THE URBANBASKET VISION</span>
         </div>
 
         {/* Bottom Editorial Line */}

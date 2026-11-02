@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React from 'react';
 import { MapPin, ArrowUpRight } from 'lucide-react';
 import { SunIcon } from '@/components/sun-icon';
@@ -27,7 +28,7 @@ export function KochiChapter({ onKochiCtaClick }: KochiChapterProps) {
 
         <p>
           Every movement starts with a neighbourhood. Ours begins in Kochi, with
-          showcase stores planned to bring the Hello experience to life.
+          showcase stores planned to bring the Urbanbasket experience to life.
         </p>
 
         <a
@@ -49,11 +50,13 @@ export function KochiChapter({ onKochiCtaClick }: KochiChapterProps) {
 
       {/* Right Artwork Panel */}
       <div className="launch-image">
-        <img
-          src="/images/local-delivery.webp"
-          alt="Hello Stores neighbourhood delivery rider on motorcycle in Kochi"
+        <Image
+          src="/images/urbanbasket-delivery-cartoon.webp"
+          alt="Cartoon Urbanbasket delivery rider on a motorcycle in Kochi"
           loading="lazy"
-          decoding="async"
+          width={1600}
+            height={715}
+            sizes="(max-width: 760px) 100vw, 60vw"
         />
         <span>THE NEIGHBOURHOOD, DELIVERED.</span>
       </div>
